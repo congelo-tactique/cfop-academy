@@ -1,0 +1,107 @@
+import type { AlgCase, AlgSet, CaseGroup } from "./types";
+
+const groups: CaseGroup[] = [
+  { id: "ocll", name: "Croix déjà faite", description: "Les arêtes sont orientées : il ne reste que les coins (ce sont les cas de l'OLL en 2 temps)." },
+  { id: "t", name: "Forme en T" },
+  { id: "p", name: "Forme en P" },
+  { id: "square", name: "Carré" },
+  { id: "c", name: "Forme en C" },
+  { id: "w", name: "Forme en W" },
+  { id: "fish", name: "Poisson" },
+  { id: "lightning", name: "Éclair" },
+  { id: "knight", name: "Cavalier" },
+  { id: "awkward", name: "Atypiques" },
+  { id: "l", name: "Forme en L" },
+  { id: "i", name: "Forme en I (ligne)" },
+  { id: "corners", name: "Coins orientés", description: "Les quatre coins sont déjà bien orientés, seules des arêtes sont à retourner." },
+  { id: "dot", name: "Point", description: "Aucune arête orientée : ce sont les cas les plus longs." },
+];
+
+type Row = [number, string, string[], string?, string?];
+
+// [numéro, groupe, algorithmes, surnom, astuce]
+const rows: Row[] = [
+  [1, "dot", ["R U2 R2 F R F' U2 R' F R F'", "(R U2 R') (R' F R F') U2 (R' F R F')"]],
+  [2, "dot", ["F (R U R' U') F' f (R U R' U') f'", "r U r' U2 r U2 R' U2 R U' r'"]],
+  [3, "dot", ["f (R U R' U') f' U' F (R U R' U') F'", "r' R2 U R' U r U2 r' U M'"]],
+  [4, "dot", ["f (R U R' U') f' U F (R U R' U') F'", "M U' r U2 r' U' R U' R' M'"]],
+  [5, "square", ["r' U2 R U R' U r"]],
+  [6, "square", ["r U2 R' U' R U' r'"]],
+  [7, "lightning", ["r U R' U R U2 r'"]],
+  [8, "lightning", ["r' U' R U' R' U2 r", "l' U' L U' L' U2 l"]],
+  [9, "fish", ["(R U R' U') R' F R2 U R' U' F'"]],
+  [10, "fish", ["(R U R' U) R' F R F' R U2 R'"]],
+  [11, "lightning", ["r U R' U R' F R F' R U2 r'", "M R U R' U R U2 R' U M'"]],
+  [12, "lightning", ["M' R' U' R U' R' U2 R U' M", "F (R U R' U') F' U F (R U R' U') F'"]],
+  [13, "knight", ["F U R U' R2 F' R U R U' R'"]],
+  [14, "knight", ["R' F R U R' F' R F U' F'"]],
+  [15, "knight", ["r' U' r R' U' R U r' U r"]],
+  [16, "knight", ["r U r' R U R' U' r U' r'"]],
+  [17, "dot", ["(R U R' U) R' F R F' U2 R' F R F'"]],
+  [18, "dot", ["r U R' U R U2 r2 U' R U' R' U2 r"]],
+  [19, "dot", ["r' R U R U R' U' M' R' F R F'", "M U R U R' U' M' R' F R F'"]],
+  [20, "dot", ["r U R' U' M2 U R U' R' U' M'"]],
+  [21, "ocll", ["(R U2 R' U') (R U R' U') (R U' R')", "(R U R' U) (R U' R' U) (R U2 R')"], "H", "Aucun coin jaune : deux paires de phares, devant et derrière."],
+  [22, "ocll", ["R U2 R2 U' R2 U' R2 U2 R", "f (R U R' U') f' F (R U R' U') F'"], "Pi", "Aucun coin jaune : des phares à gauche uniquement."],
+  [23, "ocll", ["R2 D' (R U2 R') D (R U2 R)", "R2 D (R' U2 R) D' (R' U2 R')"], "Phares", "Deux coins jaunes devant, des phares (deux autocollants jaunes) à l'arrière."],
+  [24, "ocll", ["(r U R' U') (r' F R F')"], "T (Caméléon)", "Deux coins jaunes à droite ; à gauche, les autocollants jaunes regardent vers l'avant et vers l'arrière."],
+  [25, "ocll", ["F' (r U R' U') r' F R", "R' F R B' R' F' R B"], "Nœud papillon", "Deux coins jaunes en diagonale."],
+  [26, "ocll", ["R U2 R' U' R U' R'", "R' U' R U' R' U2 R"], "Anti-Sune", "Un seul coin jaune, derrière à droite ; le jaune du coin avant gauche regarde vers vous."],
+  [27, "ocll", ["R U R' U R U2 R'"], "Sune", "Un seul coin jaune, devant à gauche ; le jaune du coin avant droit regarde vers vous."],
+  [28, "corners", ["(r U R' U') r' R U R U' R'", "M' U M U2 M' U M"]],
+  [29, "awkward", ["(R U R' U') R U' R' F' U' F R U R'"]],
+  [30, "awkward", ["F R' F R2 U' R' U' R U R' F2"]],
+  [31, "p", ["R' U' F U R U' R' F' R"]],
+  [32, "p", ["L U F' U' L' U L F L'", "R U B' U' R' U R B R'"]],
+  [33, "t", ["(R U R' U') (R' F R F')"], "T"],
+  [34, "c", ["R U R2 U' R' F R U R U' F'"]],
+  [35, "fish", ["R U2 R2 F R F' R U2 R'"]],
+  [36, "w", ["L' U' L U' L' U L U L F' L' F"]],
+  [37, "fish", ["F R' F' R U R U' R'"]],
+  [38, "w", ["(R U R' U) (R U' R' U') (R' F R F')"]],
+  [39, "lightning", ["L F' (L' U' L U) F U' L'"]],
+  [40, "lightning", ["R' F (R U R' U') F' U R"]],
+  [41, "awkward", ["(R U R' U R U2 R') F (R U R' U') F'"]],
+  [42, "awkward", ["(R' U' R U' R' U2 R) F (R U R' U') F'"]],
+  [43, "p", ["f' (L' U' L U) f", "R' U' F' U F R"]],
+  [44, "p", ["f (R U R' U') f'"], "P"],
+  [45, "t", ["F (R U R' U') F'"], "T"],
+  [46, "c", ["R' U' R' F R F' U R"]],
+  [47, "l", ["R' U' R' F R F' R' F R F' U R"]],
+  [48, "l", ["F (R U R' U') (R U R' U') F'"]],
+  [49, "l", ["r U' r2 U r2 U r2 U' r"]],
+  [50, "l", ["r' U r2 U' r2 U' r2 U r'"]],
+  [51, "i", ["f (R U R' U') (R U R' U') f'"]],
+  [52, "i", ["R U R' U R U' B U' B' R'"]],
+  [53, "l", ["r' U' R U' R' U R U' R' U2 r"]],
+  [54, "l", ["r U R' U R U' R' U R U2 r'"]],
+  [55, "i", ["R' F R U R U' R2 F' R2 U' R' U R U R'", "R U2 R2 U' R U' R' U2 F R F'"]],
+  [56, "i", ["r' U' r U' R' U R U' R' U R r' U r"]],
+  [57, "corners", ["(R U R' U') M' (U R U' r')"]],
+];
+
+const order = groups.map((g) => g.id);
+
+export const OLL_CASES: AlgCase[] = rows
+  .map(([n, group, algs, nickname, tip]): AlgCase => ({
+    id: `oll-${n}`,
+    set: "oll",
+    name: `OLL ${n}`,
+    nickname,
+    group,
+    algs,
+    mask: "oll",
+    goal: "oll",
+    tip,
+  }))
+  .sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group) || parseInt(a.id.slice(4)) - parseInt(b.id.slice(4)));
+
+export const OLL_SET: AlgSet = {
+  id: "oll",
+  name: "OLL complète",
+  short: "OLL",
+  description: "Les 57 cas pour orienter toute la dernière couche en un seul algorithme.",
+  groups,
+  cases: OLL_CASES,
+  thumb: "ll",
+};

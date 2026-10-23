@@ -69,6 +69,11 @@ for (const set of SETS) {
     if (c.goal === "pll" || c.goal === "pll-corners") {
       if (!goalReached(st, "oll")) err(`${c.name}: le cas n'est pas déjà orienté`);
     }
+    // « arêtes seulement » : les coins doivent être à leur place dans le schéma affiché
+    if (c.group === "edges" && (c.goal === "pll" || c.set === "pll2")) {
+      const ok = st.filter((x) => x.home[1] === 1 && x.pos.every((v) => v !== 0)).every(stickerHome);
+      if (!ok) err(`${c.name}: les coins ne sont pas en place alors que le cas est classé « arêtes seulement »`);
+    }
     if (c.goal === "oll" && c.set !== "oll2" && goalReached(st, "oll")) err(`${c.name}: cas déjà orienté`);
     if (goalReached(st, c.goal)) err(`${c.name}: le cas est déjà résolu`);
     // l'algo principal résout bien

@@ -15,7 +15,7 @@ const rows: Row[] = [
   ["Ua", "edges", ["M2 U M U2 M' U M2", "R U' R U R U R U' R' U' R2"], "Un côté complet (barre de 3) : placez-le à l'arrière. Les trois autres arêtes tournent dans le sens inverse des aiguilles d'une montre."],
   ["Ub", "edges", ["M2 U' M U2 M' U' M2", "R2 U R U R' U' R' U' R' U R'"], "Un côté complet (barre de 3) : placez-le à l'arrière. Les trois autres arêtes tournent dans le sens des aiguilles d'une montre."],
   ["H", "edges", ["M2 U M2 U2 M2 U M2", "M2 U' M2 U2 M2 U' M2"], "Phares sur les quatre côtés ; chaque arête porte la couleur du côté opposé."],
-  ["Z", "edges", ["M' U M2 U M2 U M' U2 M2"], "Phares sur les quatre côtés ; chaque arête porte la couleur d'un côté voisin."],
+  ["Z", "edges", ["M' U M2 U M2 U M' U2 M2 U'"], "Phares sur les quatre côtés ; chaque arête porte la couleur d'un côté voisin."],
   ["Aa", "corners", ["x (R' U R') D2 (R U' R') D2 R2 x'"], "Phares sur un seul côté (ici à l'arrière) et toutes les arêtes en place : trois coins tournent."],
   ["Ab", "corners", ["x R2 D2 (R U R') D2 (R U' R) x'"], "Phares sur un seul côté (ici à droite) et toutes les arêtes en place : trois coins tournent, dans l'autre sens que Aa."],
   ["E", "corners", ["x' (R U' R' D) (R U R' D') (R U R' D) (R U' R' D') x", "x' L' U L D' L' U' L D L' U' L D' L' U L D x"], "Aucun phare et toutes les arêtes en place : sur chaque côté, les deux coins sont de couleurs différentes."],

@@ -94,7 +94,7 @@ export const PLL2_CASES: AlgCase[] = [
   },
   {
     id: "pll2-z", set: "pll2", name: "Z-perm", group: "edges", mask: "pll", goal: "pll",
-    algs: ["M' U M2 U M2 U M' U2 M2"],
+    algs: ["M' U M2 U M2 U M' U2 M2 U'"],
     tip: "Phares sur les quatre côtés ; chaque arête porte la couleur d'un côté voisin.",
   },
 ];

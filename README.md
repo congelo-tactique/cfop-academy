@@ -6,7 +6,9 @@ Application web pour apprendre la méthode CFOP (Fridrich) et résoudre le Rubik
 
 Prérequis : [Node.js](https://nodejs.org) 20 ou plus récent.
 
-- **Le plus simple** : double-cliquez sur `Lancer CFOP Academy.bat`. Les dépendances s'installent au premier lancement, puis le navigateur s'ouvre.
+- **Le plus simple** (Windows) :
+  1. double-cliquez sur `Installer les prerequis.bat` : il installe Node.js LTS via `winget` s'il est absent ou trop ancien, puis les dépendances du projet ;
+  2. double-cliquez sur `Lancer CFOP Academy.bat` : l'application démarre et le navigateur s'ouvre.
 - **En ligne de commande** :
 
 ```bash

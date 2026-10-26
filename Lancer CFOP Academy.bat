@@ -3,7 +3,7 @@ title CFOP Academy
 cd /d "%~dp0"
 where node 1>NUL 2>NUL
 if errorlevel 1 (
-  echo Node.js est introuvable. Installez-le depuis https://nodejs.org puis relancez ce fichier.
+  echo Node.js est introuvable. Lancez d'abord "Installer les prerequis.bat".
   pause
   exit /b 1
 )

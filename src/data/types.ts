@@ -3,7 +3,7 @@ import type { Goal } from "../cube/goals";
 export type SetId = "oll2" | "pll2" | "f2l" | "oll" | "pll";
 
 /** Masque d'affichage : quelles pièces sont grisées. */
-export type MaskId = "full" | "oll" | "oll-edges" | "pll" | "pll-corners" | "f2l" | "cross";
+export type MaskId = "full" | "oll" | "oll-edges" | "pll" | "pll-corners" | "f2l" | "cross" | "first-layer" | "ll-edges";
 
 export interface AlgCase {
   id: string;

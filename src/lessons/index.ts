@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import { CrossLesson, F2LIntuitiveLesson, IntroLesson } from "./foundations";
 import { FirstSolvesLesson, OLL2Lesson, PLL2Lesson } from "./lastLayer";
+import { LBL_LESSONS } from "./lbl";
 import { AdvancedLesson, F2LFullLesson, OLLFullLesson, PLLFullLesson } from "./advanced";
 
 export interface Lesson {
@@ -59,3 +60,36 @@ export const LESSONS: Lesson[] = [
 ];
 
 export const LESSON_BY_ID = Object.fromEntries(LESSONS.map((l) => [l.id, l]));
+
+// ---------------------------------------------------------------------------
+// Parcours
+// ---------------------------------------------------------------------------
+
+
+export interface Track {
+  id: "cfop" | "lbl";
+  /** Chemin de base des pages (sans slash final). */
+  base: string;
+  eyebrow: string;
+  title: string;
+  intro: string;
+  lessons: Lesson[];
+}
+
+export const CFOP_TRACK: Track = {
+  id: "cfop",
+  base: "/parcours",
+  eyebrow: "Parcours CFOP",
+  title: "Apprendre le CFOP, étape par étape",
+  intro: "Un parcours progressif : on commence par des versions simplifiées de chaque étape, puis on passe à la méthode complète. Tout reste accessible librement, l'ordre est simplement celui que nous conseillons.",
+  lessons: LESSONS,
+};
+
+export const LBL_TRACK: Track = {
+  id: "lbl",
+  base: "/debutant",
+  eyebrow: "Méthode débutant",
+  title: "Résoudre le cube pour la première fois",
+  intro: "La méthode couche par couche (LBL) : 7 étapes et seulement 7 algorithmes courts pour résoudre le Rubik's Cube. Idéale si vous n'avez jamais terminé un cube, et parfaite pour préparer le CFOP.",
+  lessons: LBL_LESSONS,
+};

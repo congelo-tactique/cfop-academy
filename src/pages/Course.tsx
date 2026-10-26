@@ -1,42 +1,40 @@
 import { Link, Navigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, CheckCircle2, ChevronRight, Circle, Clock } from "lucide-react";
-import { LESSONS, LESSON_BY_ID } from "../lessons";
+import { LESSONS, type Lesson, type Track } from "../lessons";
 import { useStore } from "../store/useStore";
 import { Progress } from "../components/ui";
 
-export function nextLessonId(done: Record<string, boolean>): string {
-  return (LESSONS.find((l) => !done[l.id]) ?? LESSONS[LESSONS.length - 1]).id;
+export function nextLessonId(done: Record<string, boolean>, lessons: Lesson[] = LESSONS): string {
+  return (lessons.find((l) => !done[l.id]) ?? lessons[lessons.length - 1]).id;
 }
 
-export function CoursePage() {
+export function CoursePage({ track }: { track: Track }) {
   const done = useStore((s) => s.lessonsDone);
-  const count = LESSONS.filter((l) => done[l.id]).length;
-  const current = nextLessonId(done);
+  const { lessons } = track;
+  const count = lessons.filter((l) => done[l.id]).length;
+  const current = nextLessonId(done, lessons);
   let lastPhase = "";
 
   return (
     <div className="page-narrow">
       <header className="page-header">
-        <div className="eyebrow">Parcours</div>
-        <h1>Apprendre le CFOP, étape par étape</h1>
-        <p>
-          Un parcours progressif : on commence par des versions simplifiées de chaque étape, puis on passe à la méthode
-          complète. Tout reste accessible librement, l'ordre est simplement celui que nous conseillons.
-        </p>
+        <div className="eyebrow">{track.eyebrow}</div>
+        <h1>{track.title}</h1>
+        <p>{track.intro}</p>
         <div className="row" style={{ maxWidth: 420 }}>
-          <div style={{ flex: 1 }}><Progress value={count / LESSONS.length} /></div>
-          <span className="small muted">{count}/{LESSONS.length} leçons</span>
+          <div style={{ flex: 1 }}><Progress value={count / lessons.length} /></div>
+          <span className="small muted">{count}/{lessons.length} leçons</span>
         </div>
       </header>
 
       <div className="path">
-        {LESSONS.map((l, i) => {
+        {lessons.map((l, i) => {
           const showPhase = l.phase !== lastPhase;
           lastPhase = l.phase;
           return (
             <div key={l.id} style={{ display: "contents" }}>
               {showPhase && <div className="phase-label">{l.phase}</div>}
-              <Link to={`/parcours/${l.id}`} className={`path-item ${l.id === current ? "current" : ""}`}>
+              <Link to={`${track.base}/${l.id}`} className={`path-item ${l.id === current ? "current" : ""}`}>
                 <div className={`path-num ${done[l.id] ? "done" : ""}`} style={{ background: l.color }}>
                   {i}
                 </div>
@@ -59,20 +57,21 @@ export function CoursePage() {
   );
 }
 
-export function LessonPage() {
+export function LessonPage({ track }: { track: Track }) {
   const { id } = useParams();
-  const lesson = id ? LESSON_BY_ID[id] : undefined;
+  const { lessons } = track;
+  const lesson = lessons.find((l) => l.id === id);
   const done = useStore((s) => (id ? !!s.lessonsDone[id] : false));
   const toggle = useStore((s) => s.toggleLesson);
-  if (!lesson) return <Navigate to="/parcours" replace />;
-  const idx = LESSONS.indexOf(lesson);
-  const prev = LESSONS[idx - 1];
-  const next = LESSONS[idx + 1];
+  if (!lesson) return <Navigate to={track.base} replace />;
+  const idx = lessons.indexOf(lesson);
+  const prev = lessons[idx - 1];
+  const next = lessons[idx + 1];
   const Content = lesson.component;
 
   return (
     <article className="lesson">
-      <Link to="/parcours" className="btn ghost sm" style={{ marginBottom: 12 }}><ArrowLeft size={14} /> Parcours</Link>
+      <Link to={track.base} className="btn ghost sm" style={{ marginBottom: 12 }}><ArrowLeft size={14} /> {track.eyebrow}</Link>
       <header className="page-header">
         <div className="eyebrow">
           <span style={{ width: 10, height: 10, borderRadius: 3, background: lesson.color, display: "inline-block" }} />
@@ -97,10 +96,10 @@ export function LessonPage() {
 
       <nav className="lesson-nav">
         {prev ? (
-          <Link className="btn" to={`/parcours/${prev.id}`}><ArrowLeft size={16} /> {prev.title}</Link>
+          <Link className="btn" to={`${track.base}/${prev.id}`}><ArrowLeft size={16} /> {prev.title}</Link>
         ) : <span />}
         {next && (
-          <Link className="btn primary" to={`/parcours/${next.id}`} onClick={() => !done && toggle(lesson.id, true)}>
+          <Link className="btn primary" to={`${track.base}/${next.id}`} onClick={() => !done && toggle(lesson.id, true)}>
             {next.title} <ArrowRight size={16} />
           </Link>
         )}

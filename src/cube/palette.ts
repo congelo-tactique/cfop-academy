@@ -48,6 +48,12 @@ export function maskedColor(s: Sticker, mask: MaskId = "full"): DisplayColor {
     case "f2l":
       if (top && !isCenter(s.home)) return "X";
       return s.color;
+    case "first-layer":
+      if (isCenter(s.home) || s.home[1] === -1) return s.color;
+      return "X";
+    case "ll-edges":
+      if (top && isCorner(s.home)) return "X";
+      return s.color;
     case "cross":
       if (isCenter(s.home)) return s.color;
       if (s.home[1] === -1 && isEdge(s.home)) return s.color;

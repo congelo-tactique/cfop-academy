@@ -12,6 +12,7 @@ import { TrainerPage } from "./pages/Trainer";
 import { QuizPage } from "./pages/Quiz";
 import { SettingsPage } from "./pages/Settings";
 import { useStore } from "./store/useStore";
+import { CFOP_TRACK, LBL_TRACK } from "./lessons";
 
 export function App() {
   const theme = useStore((s) => s.theme);
@@ -26,8 +27,10 @@ export function App() {
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="notation" element={<NotationPage />} />
-          <Route path="parcours" element={<CoursePage />} />
-          <Route path="parcours/:id" element={<LessonPage />} />
+          <Route path="debutant" element={<CoursePage key="lbl" track={LBL_TRACK} />} />
+          <Route path="debutant/:id" element={<LessonPage key="lbl-lesson" track={LBL_TRACK} />} />
+          <Route path="parcours" element={<CoursePage key="cfop" track={CFOP_TRACK} />} />
+          <Route path="parcours/:id" element={<LessonPage key="cfop-lesson" track={CFOP_TRACK} />} />
           <Route path="algorithmes" element={<AlgorithmsPage />} />
           <Route path="melangeur" element={<ScramblerPage />} />
           <Route path="entrainement" element={<TrainingPage />} />

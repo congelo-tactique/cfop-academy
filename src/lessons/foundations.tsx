@@ -59,6 +59,8 @@ export function IntroLesson() {
       </ul>
 
       <Callout title="Avant de commencer">
+        <p>Ce parcours suppose que vous savez déjà résoudre le cube. Sinon, commencez par la{" "}
+          <Link to="/debutant">méthode débutant</Link>.</p>
         <p>Assurez-vous de bien lire la notation des mouvements (R, U', F2, r, M…). Si besoin, passez par la section{" "}
           <Link to="/notation">Notation</Link> : elle contient aussi un bac à sable pour tester n'importe quelle séquence.</p>
       </Callout>

@@ -23,6 +23,7 @@ Pour une version optimisée : `npm run build` puis `npm run preview`. Le dossier
 | Section | Ce qu'on y trouve |
 | --- | --- |
 | **Notation** | Faces, prime/double, mouvements larges, tranches M/E/S, rotations x/y/z, lecture d'algorithmes, bac à sable (saisie au clavier possible). |
+| **Méthode débutant** | La méthode couche par couche (LBL) en 9 leçons : marguerite et croix blanche, coins blancs, deuxième couche, croix jaune, arêtes et coins jaunes, aide-mémoire. 7 algorithmes, tous animés et vérifiés. |
 | **Parcours CFOP** | 10 leçons progressives : vue d'ensemble → croix → F2L intuitif → OLL et PLL en 2 temps → premières résolutions → F2L 41 cas → OLL 57 → PLL 21 → techniques avancées. |
 | **Algorithmes** | Bibliothèque des 135 cas (OLL/PLL 2 temps, F2L, OLL, PLL) avec animation 3D, alternatives, algorithme préféré et statut d'apprentissage. |
 | **Entraînement** | Chronomètre (inspection WCA, +2/DNF, ao5/ao12/ao100, graphique), trainer d'algorithmes (aléatoire ou répétition espacée, chrono d'exécution, mélange de mise en place), quiz de reconnaissance. Chaque outil s'utilise indépendamment. |

@@ -66,6 +66,9 @@ export function HomePage() {
             </Link>
             <Link to="/entrainement/chrono" className="btn lg"><Timer size={18} /> Chronomètre</Link>
           </div>
+          <p className="small mt" style={{ marginBottom: 0 }}>
+            Jamais résolu un Rubik's Cube ? Commencez par la <Link to="/debutant">méthode débutant</Link> (7 étapes, 7 algorithmes).
+          </p>
         </div>
         <HeroCube />
       </section>

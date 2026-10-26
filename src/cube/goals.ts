@@ -5,7 +5,7 @@ import {
   type CubeState, type Move, FACE_NORMAL,
 } from "./cube";
 
-export type Goal = "f2l" | "oll" | "oll-edges" | "pll" | "pll-corners" | "solved" | "cross";
+export type Goal = "f2l" | "oll" | "oll-edges" | "pll" | "pll-corners" | "solved" | "cross" | "first-layer";
 
 /** Remet le cube dans l'orientation standard (centres à leur place). */
 export function normalizeOrientation(state: CubeState): CubeState {
@@ -51,6 +51,8 @@ export function goalReached(state: CubeState, goal: Goal): boolean {
       return isSolved(s);
     case "cross":
       return crossSolved(s);
+    case "first-layer":
+      return s.every((st) => st.home[1] !== -1 || stickerHome(st));
     case "f2l":
       return f2lSolved(s);
     case "oll":

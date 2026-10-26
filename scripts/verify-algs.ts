@@ -4,7 +4,8 @@
 // - les alternatives résolvent le même cas (à l'AUF près)
 // - les cas d'un même set sont tous distincts
 // - contrôles de catégorie OLL / PLL
-import { applyAlg, caseState, faceColors, stickerHome, validateAlg, type CubeState } from "../src/cube/cube.ts";
+import { applyAlg, caseState, faceColors, solvedCube, stickerHome, validateAlg, type CubeState } from "../src/cube/cube.ts";
+import { LBL, LBL_DEMOS } from "../src/lessons/lblAlgs.ts";
 import { alignAlg, goalReached, normalizeOrientation } from "../src/cube/goals.ts";
 import { SETS } from "../src/data/index.ts";
 
@@ -118,6 +119,37 @@ for (const set of SETS) {
     }
   }
   console.log(`  ${seen.size} cas distincts`);
+}
+
+// ---------------------------------------------------------------------------
+// Méthode débutant (LBL)
+// ---------------------------------------------------------------------------
+console.log("\n== Méthode débutant");
+{
+  const solvedSt = solvedCube();
+  for (const [name, d] of Object.entries(LBL_DEMOS)) {
+    const st = applyAlg(solvedSt, d.setup);
+    if (goalReached(st, d.goal)) err(`démo ${name} : déjà résolue au départ`);
+    if (!goalReached(applyAlg(st, d.alg), d.goal)) err(`démo ${name} : la séquence n'atteint pas l'objectif`);
+  }
+  const movedHomes = (st: CubeState) => [...new Set(st.filter((x) => !stickerHome(x)).map((x) => x.home.join()))].sort();
+  const isTopEdge = (h: string) => { const v = h.split(",").map(Number); return v[1] === 1 && v.filter((x) => x !== 0).length === 2; };
+  // arêtes de 2e couche : seule l'arête visée bouge parmi les deux premières couches
+  for (const [a, home] of [[LBL.rightEdge, "1,0,1"], [LBL.leftEdge, "-1,0,1"]] as const) {
+    const m = movedHomes(caseState(a)).filter((h) => Number(h.split(",")[1]) <= 0);
+    if (m.join() !== home) err(`${a} : pièces des 2 premières couches déplacées : ${m.join(" ")}`);
+  }
+  // échange d'arêtes : avant et gauche échangées, arrière et droite intactes
+  const sw = applyAlg(solvedSt, LBL.edgeSwap);
+  const swEdges = movedHomes(sw).filter(isTopEdge);
+  if (swEdges.join(" ") !== "-1,1,0 0,1,1" || !goalReached(sw, "f2l")) err(`${LBL.edgeSwap} : effet inattendu (${swEdges.join(" ")})`);
+  // placement des coins : le coin avant-droit et les arêtes ne bougent pas
+  const cc = applyAlg(solvedSt, LBL.cornerCycle);
+  const ccMoved = movedHomes(cc);
+  if (ccMoved.includes("1,1,1") || ccMoved.length !== 3 || !goalReached(cc, "f2l")) err(`${LBL.cornerCycle} : effet inattendu (${ccMoved.join(" ")})`);
+  // orientation : 6 répétitions = identité
+  if (!goalReached(applyAlg(solvedSt, Array(6).fill(LBL.cornerTwist).join(" ")), "solved")) err("R' D' R D x6 n'est pas l'identité");
+  console.log("  démos et algorithmes vérifiés");
 }
 
 console.log(errors ? `\n${errors} erreur(s)` : "\nTout est correct ✓");

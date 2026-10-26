@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import {
-  BookOpen, Dumbbell, GraduationCap, Home, LayoutGrid, Menu, Moon, PenLine, Settings, Shuffle, Sun, Timer,
+  BookOpen, Blocks, Dumbbell, GraduationCap, Home, LayoutGrid, Menu, Moon, PenLine, Settings, Shuffle, Sun, Timer,
 } from "lucide-react";
 import { useStore } from "../store/useStore";
 import { ToastHost } from "./ui";
@@ -33,6 +33,7 @@ const NAV = [
   { section: "Apprendre" },
   { to: "/", label: "Accueil", icon: Home, end: true },
   { to: "/notation", label: "Notation", icon: PenLine, dot: "var(--c-blue)" },
+  { to: "/debutant", label: "Méthode débutant", icon: Blocks, dot: "var(--c-white)" },
   { to: "/parcours", label: "Parcours CFOP", icon: GraduationCap, dot: "var(--c-green)" },
   { to: "/algorithmes", label: "Algorithmes", icon: LayoutGrid, dot: "var(--c-yellow)" },
   { section: "Pratiquer" },
